@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Student Attendance System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 0.6rem;
+            text-align: center;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        select, button {
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .attendance-form {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+        .attendance-form > div {
+            flex: 1;
+            margin-right: 1rem;
+        }
+        .attendance-form > div:last-child {
+            margin-right: 0;
+        }
+        #record-table {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Student Attendance System</h1>
+
+    <div class="attendance-form">
+        <div>
+            <label for="studentName">Student Name:</label><br />
+            <input type="text" id="studentName" placeholder="Enter student name" />
+        </div>
+        <div>
+            <label for="attendanceStatus">Attendance:</label><br />
+            <select id="attendanceStatus">
+                <option value="Present">Present</option>
+                <option value="Absent">Absent</option>
+            </select>
+        </div>
+        <div>
+            <button onclick="markAttendance()">Mark Attendance</button>
+        </div>
+    </div>
+
+    <h2>Attendance Records</h2>
+    <table id="record-table">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Status</th>
+                <th>Marked At</th>
+            </tr>
+        </thead>
+        <tbody id="recordBody">
+            <!-- Attendance records will appear here -->
+        </tbody>
+    </table>
+
+    <script>
+        const records = [];
+
+        function markAttendance() {
+            const nameInput = document.getElementById('studentName');
+            const statusSelect = document.getElementById('attendanceStatus');
+            const name = nameInput.value.trim();
+            const status = statusSelect.value;
+
+            if (!name) {
+                alert('Please enter the student name.');
+                return;
+            }
+
+            const now = new Date();
+            const timeStr = now.toLocaleString();
+
+            // Add to records
+            records.push({ name, status, time: timeStr });
+
+            // Update the table
+            renderRecords();
+
+            // Clear input
+            nameInput.value = '';
+            statusSelect.value = 'Present';
+        }
+
+        function renderRecords() {
+            const tbody = document.getElementById('recordBody');
+            tbody.innerHTML = '';
+
+            records.forEach(record => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${record.name}</td>
+                    <td>${record.status}</td>
+                    <td>${record.time}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    </script>
+</body>
+</html>
